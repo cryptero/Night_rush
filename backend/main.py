@@ -1,26 +1,18 @@
-from flask import Flask, request
-import telegram
-import os
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = '8158342090:AAEeMV9W8c267_Aa0n7ikGFIbCapZg-dzbk'  # 👈 твой токен
-bot = telegram.Bot(token=TOKEN)
+TOKEN = "8158342090:AAEeMV9W8c267_Aa0n7ikGFIbCapZg-dzbk"
 
-app = Flask(__name__)
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "🏁 Добро пожаловать в Night Rush!\nНажми, чтобы запустить игру:\n"
+        "👉 https://<your-app-name>.onrender.com"
+    )
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    data = request.get_json()
+def main():
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.run_polling()
 
-    if 'message' in data:
-        chat_id = data['message']['chat']['id']
-        text = data['message'].get('text', '')
-
-        if text == '/start':
-            bot.send_message(chat_id=chat_id, text='Привет! Я готов к гонке 🏁')
-        else:
-            bot.send_message(chat_id=chat_id, text='Команда не распознана ❓')
-
-    return 'ok'
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    main()
