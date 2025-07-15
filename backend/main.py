@@ -1,10 +1,25 @@
 import logging
-from telegram.ext import ApplicationBuilder, CommandHandler
+from telegram import Update
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    ContextTypes,
+)
 from backend.config import BOT_TOKEN
-from backend.handlers import start, help_command
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
 
+# Команда /start
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Привет! Это мини-приложение Night Rush 🚀")
+
+# Команда /help
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Пока что тут мало команд, но мы работаем над этим!")
+
+# Инициализация и запуск бота
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
