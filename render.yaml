@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: night-rush
-    env: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: python backend/main.py
-    autoDeploy: true
-    region: frankfurt
